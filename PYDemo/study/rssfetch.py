@@ -7,7 +7,7 @@ import urllib2
 def getRSS():
   
   """
-  test branch
+  test branch again
   aa = getRSS()
   for i in range(0,len(aa)/2):
     print str(i)+":" + aa[i]['title']
