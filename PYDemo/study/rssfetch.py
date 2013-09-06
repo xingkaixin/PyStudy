@@ -7,7 +7,7 @@ import urllib2
 def getRSS():
   
   """
-  test branch again
+  test branch rssfetch
   aa = getRSS()
   for i in range(0,len(aa)/2):
     print str(i)+":" + aa[i]['title']
@@ -52,19 +52,19 @@ def getURL(url):
     return vid_list
 
 def filter_tags(htmlstr):
-    re_cdata=re.compile('//<!\[CDATA\[[^>]*//\]\]>',re.I) #匹配CDATA
+    re_cdata=re.compile('//<!\[CDATA\[[^>]*//\]\]>',re.I) #鍖归厤CDATA
     re_script=re.compile('<\s*script[^>]*>[^<]*<\s*/\s*script\s*>',re.I)#Script
     re_style=re.compile('<\s*style[^>]*>[^<]*<\s*/\s*style\s*>',re.I)#style
-    re_p=re.compile('<P\s*?/?>')#处理换行
-    re_h=re.compile('</?\w+[^>]*>')#HTML标签
-    re_comment=re.compile('<!--[^>]*-->')#HTML注释
-    s=re_cdata.sub('',htmlstr)#去掉CDATA
-    s=re_script.sub('',s) #去掉SCRIPT
-    s=re_style.sub('',s)#去掉style
-    s=re_p.sub('\r\n',s)#将<p>转换为换行
-    s=re_h.sub('',s) #去掉HTML 标签
-    s=re_comment.sub('',s)#去掉HTML注释  
-    blank_line=re.compile('\n+')#去掉多余的空行
+    re_p=re.compile('<P\s*?/?>')#澶勭悊鎹㈣
+    re_h=re.compile('</?\w+[^>]*>')#HTML鏍囩
+    re_comment=re.compile('<!--[^>]*-->')#HTML娉ㄩ噴
+    s=re_cdata.sub('',htmlstr)#鍘绘帀CDATA
+    s=re_script.sub('',s) #鍘绘帀SCRIPT
+    s=re_style.sub('',s)#鍘绘帀style
+    s=re_p.sub('\r\n',s)#灏�p>杞崲涓烘崲琛�
+    s=re_h.sub('',s) #鍘绘帀HTML 鏍囩
+    s=re_comment.sub('',s)#鍘绘帀HTML娉ㄩ噴  
+    blank_line=re.compile('\n+')#鍘绘帀澶氫綑鐨勭┖琛�
     s=blank_line.sub('\n',s)
     return s
 
