@@ -38,6 +38,7 @@ def getURL(url):
         link = re.compile(r'<link>(.*?)</link>',re.DOTALL).findall(item[i])
         description = re.compile(r'<description>(.*?)</description>',re.DOTALL).findall(item[i])
         pubDate = re.compile(r'<pubDate>(.*?)</pubDate>',re.DOTALL).findall(item[i])
+        pubDate1 = re.compile(r'<pubDate1>(.*?)</pubDate1>',re.DOTALL).findall(item[i])
 #         print title[0]
 #         print link[0]
 #         print description[0]
@@ -52,34 +53,38 @@ def getURL(url):
     return vid_list
 
 def filter_tags(htmlstr):
-    re_cdata=re.compile('//<!\[CDATA\[[^>]*//\]\]>',re.I) #匹配CDATA
-    re_script=re.compile('<\s*script[^>]*>[^<]*<\s*/\s*script\s*>',re.I)#Script
-    re_style=re.compile('<\s*style[^>]*>[^<]*<\s*/\s*style\s*>',re.I)#style
-    re_p=re.compile('<P\s*?/?>')#处理换行
-    re_h=re.compile('</?\w+[^>]*>')#HTML标签
-    re_comment=re.compile('<!--[^>]*-->')#HTML注释
-    s=re_cdata.sub('',htmlstr)#去掉CDATA
-    s=re_script.sub('',s) #去掉SCRIPT
-    s=re_style.sub('',s)#去掉style
-    s=re_p.sub('\r\n',s)#将<p>转换为换行
-    s=re_h.sub('',s) #去掉HTML 标签
-    s=re_comment.sub('',s)#去掉HTML注释  
-    blank_line=re.compile('\n+')#去掉多余的空行
-    s=blank_line.sub('\n',s)
+    re_test1=re.compile(';.*?&.*?;',re.DOTALL)
+    re_test2=re.compile('!--.*?].*?--',re.DOTALL)
+    re_test3=re.compile('div class=".*?"',re.DOTALL)
+    re_test4=re.compile('pspan style=".*?"',re.DOTALL)
+    re_test5=re.compile('&.*? style=".*?"',re.DOTALL)
+    s=re_test1.sub('',htmlstr)
+    s=re_test2.sub('',s)
+    s=re_test3.sub('',s)
+    s=re_test4.sub('',s)
+    s=s.replace('&lt','')
+    s=re_test5.sub('',s)
     return s
-
 
 # with open("test.txt","a") as f:
 #   artice = getURL("http://blog.asia.playstation.com/community/feeds/blogs?community=2068")
 #   f.writelines(name + "\n")
 aa  = getURL("http://blog.asia.playstation.com/community/feeds/blogs?community=2068")
-for i in range(0,len(aa)):
-  title =  str(i)+"_title:" + aa[i]['title']
-  link =  str(i)+"_link:" +aa[i]['link']
-  description =  str(i)+"_description:" +filter_tags(aa[i]['description'])
-  pubDate = str(i)+"_pubDate:" +aa[i]['pubDate']
-  with open("test.txt","a") as f:
-    f.writelines(title + "\n")
-    f.writelines(link + "\n")
-    f.writelines(description + "\n")
-    f.writelines(pubDate + "\n")
+print aa[0]['description']
+print "123"
+description =  filter_tags(aa[0]['description'])
+print description
+with open("test.txt","a") as f:
+  f.truncate()
+  f.close()
+# for i in range(0,len(aa)):
+#   title =  str(i)+"_title:" + aa[i]['title']
+#   link =  str(i)+"_link:" +aa[i]['link']
+#   description =  str(i)+"_description:" +filter_tags(aa[i]['description'])
+#   pubDate = str(i)+"_pubDate:" +aa[i]['pubDate']
+#   with open("test.txt","a") as f:
+#     f.writelines(title + "\n")
+#     f.writelines(link + "\n")
+#     f.writelines(description + "\n")
+#     f.writelines(pubDate + "\n")
+# f.close()
